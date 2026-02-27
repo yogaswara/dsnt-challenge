@@ -17,7 +17,7 @@ type EchoService interface {
 
 // BookRepository defines the interface for database operations related to books
 type BookRepository interface {
-	FindAll(ctx context.Context, page, limit int, search string) ([]domain.Book, int, error)
+	FindAll(ctx context.Context, page, limit int, search, author string) ([]domain.Book, int, error)
 	FindByID(ctx context.Context, id string) (domain.Book, error)
 	Save(ctx context.Context, book domain.Book) error
 	Update(ctx context.Context, book domain.Book) error

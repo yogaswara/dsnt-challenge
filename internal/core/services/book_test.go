@@ -16,7 +16,7 @@ func newMockBookRepo() *mockBookRepo {
 	return &mockBookRepo{books: make(map[string]domain.Book)}
 }
 
-func (m *mockBookRepo) FindAll(ctx context.Context, page, limit int, search string) ([]domain.Book, int, error) {
+func (m *mockBookRepo) FindAll(ctx context.Context, page, limit int, search, author string) ([]domain.Book, int, error) {
 	var list []domain.Book
 	for _, b := range m.books {
 		list = append(list, b)

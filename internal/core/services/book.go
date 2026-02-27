@@ -30,7 +30,7 @@ func (s *booksService) GetBooks(ctx context.Context, req domain.GetBooksRequest)
 		req.Limit = 10
 	}
 
-	books, total, err := s.repo.FindAll(ctx, req.Page, req.Limit, req.Search)
+	books, total, err := s.repo.FindAll(ctx, req.Page, req.Limit, req.Search, req.Author)
 	if err != nil {
 		return nil, domain.PaginationMeta{}, err
 	}

@@ -23,7 +23,7 @@ func NewBookRepository() ports.BookRepository {
 	}
 }
 
-func (r *bookRepository) FindAll(ctx context.Context, page, limit int, search string) ([]domain.Book, int, error) {
+func (r *bookRepository) FindAll(ctx context.Context, page, limit int, search, author string) ([]domain.Book, int, error) {
 	r.RLock()
 	defer r.RUnlock()
 
@@ -31,10 +31,12 @@ func (r *bookRepository) FindAll(ctx context.Context, page, limit int, search st
 	searchLower := strings.ToLower(search)
 
 	for _, b := range r.books {
-		// Filter by search string in title or author (case-insensitive)
-		if search == "" ||
+		matchSearch := search == "" ||
 			strings.Contains(strings.ToLower(b.Title), searchLower) ||
-			strings.Contains(strings.ToLower(b.Author), searchLower) {
+			strings.Contains(strings.ToLower(b.Author), searchLower)
+		matchAuthor := author == "" || strings.EqualFold(b.Author, author)
+
+		if matchSearch && matchAuthor {
 			filteredBooks = append(filteredBooks, b)
 		}
 	}

@@ -56,12 +56,14 @@ func (h *BooksHandler) getBooks(w http.ResponseWriter, r *http.Request) {
 	pageStr := r.URL.Query().Get("page")
 	limitStr := r.URL.Query().Get("limit")
 	searchStr := r.URL.Query().Get("search")
+	authorStr := r.URL.Query().Get("author")
 
 	page, _ := strconv.Atoi(pageStr) // Defaults format to 0 on err, handled by service
 	limit, _ := strconv.Atoi(limitStr)
 
 	req := domain.GetBooksRequest{
 		Search: searchStr,
+		Author: authorStr,
 		Page:   page,
 		Limit:  limit,
 	}

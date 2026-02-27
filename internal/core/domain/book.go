@@ -33,6 +33,7 @@ type PaginationMeta struct {
 // GetBooksRequest represents the query parameters for listing books
 type GetBooksRequest struct {
 	Search string
+	Author string
 	Page   int
 	Limit  int
 }

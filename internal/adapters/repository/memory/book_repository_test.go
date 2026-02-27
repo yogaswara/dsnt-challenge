@@ -32,8 +32,7 @@ func TestBookRepository(t *testing.T) {
 		repo.Save(ctx, domain.Book{ID: "2", Title: "Book 2", Author: "Jane", Year: 2021})
 		repo.Save(ctx, domain.Book{ID: "3", Title: "Book 3", Author: "Doe", Year: 2022})
 
-		// We have 3 books now: "1", "2", "3"
-		books, total, err := repo.FindAll(ctx, 1, 2, "")
+		books, total, err := repo.FindAll(ctx, 1, 2, "", "")
 		if err != nil {
 			t.Fatalf("expected no error, got %v", err)
 		}
@@ -44,13 +43,13 @@ func TestBookRepository(t *testing.T) {
 			t.Errorf("expected 2 books, got %d", len(books))
 		}
 
-		booksPage2, _, _ := repo.FindAll(ctx, 2, 2, "")
+		booksPage2, _, _ := repo.FindAll(ctx, 2, 2, "", "")
 		if len(booksPage2) != 1 {
 			t.Errorf("expected 1 book on page 2, got %d", len(booksPage2))
 		}
 
 		// Test search filtering
-		booksSearch, _, _ := repo.FindAll(ctx, 1, 10, "Doe") // Should match "Book 3" by Doe
+		booksSearch, _, _ := repo.FindAll(ctx, 1, 10, "Doe", "") // Should match "Book 3" by Doe
 		if len(booksSearch) != 1 {
 			t.Errorf("expected 1 book for search 'Doe', got %d", len(booksSearch))
 		}
