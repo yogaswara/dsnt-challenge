@@ -34,6 +34,7 @@ func (h *BooksHandler) HandleBooks(w http.ResponseWriter, r *http.Request) {
 func (h *BooksHandler) HandleBookByID(w http.ResponseWriter, r *http.Request) {
 	// Extract ID from path, e.g., /books/id
 	id := strings.TrimPrefix(r.URL.Path, "/books/")
+	id = strings.TrimSuffix(id, "/")
 	if id == "" || id == r.URL.Path {
 		response.Error(w, http.StatusBadRequest, "invalid book id")
 		return
@@ -65,7 +66,7 @@ func (h *BooksHandler) getBooks(w http.ResponseWriter, r *http.Request) {
 		Limit:  limit,
 	}
 
-	books, _, err := h.service.GetBooks(r.Context(), req)
+	books, meta, err := h.service.GetBooks(r.Context(), req)
 	if err != nil {
 		logger.Error("failed to get books", err)
 		response.Error(w, http.StatusInternalServerError, "failed to get books")
@@ -73,7 +74,7 @@ func (h *BooksHandler) getBooks(w http.ResponseWriter, r *http.Request) {
 	}
 
 	logger.Info("get books request handled successfully")
-	response.JSON(w, http.StatusOK, books)
+	response.SuccessWithMeta(w, http.StatusOK, "Successfully fetched books", books, meta)
 }
 
 func (h *BooksHandler) getBookByID(w http.ResponseWriter, r *http.Request, id string) {
@@ -89,7 +90,7 @@ func (h *BooksHandler) getBookByID(w http.ResponseWriter, r *http.Request, id st
 	}
 
 	logger.Info("get book by id request handled successfully", "id", id)
-	response.JSON(w, http.StatusOK, book)
+	response.Success(w, http.StatusOK, "Successfully fetched book", book)
 }
 
 func (h *BooksHandler) createBook(w http.ResponseWriter, r *http.Request) {
@@ -108,7 +109,7 @@ func (h *BooksHandler) createBook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	logger.Info("create book request handled successfully", "id", book.ID)
-	response.JSON(w, http.StatusCreated, book)
+	response.Success(w, http.StatusCreated, "Successfully created book", book)
 }
 
 func (h *BooksHandler) updateBook(w http.ResponseWriter, r *http.Request, id string) {
@@ -131,7 +132,7 @@ func (h *BooksHandler) updateBook(w http.ResponseWriter, r *http.Request, id str
 	}
 
 	logger.Info("update book request handled successfully", "id", book.ID)
-	response.JSON(w, http.StatusOK, book)
+	response.Success(w, http.StatusOK, "Successfully updated book", book)
 }
 
 func (h *BooksHandler) deleteBook(w http.ResponseWriter, r *http.Request, id string) {
