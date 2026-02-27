@@ -15,13 +15,16 @@ func main() {
 
 	// Initialize Services
 	pingService := services.NewPingService()
+	echoService := services.NewEchoService()
 
 	// Initialize Handlers
 	pingHandler := httphandler.NewPingHandler(pingService)
+	echoHandler := httphandler.NewEchoHandler(echoService)
 
 	// Setup Routes
 	mux := http.NewServeMux()
 	mux.HandleFunc("/ping", pingHandler.Handle)
+	mux.HandleFunc("/echo", echoHandler.Handle)
 
 	// Start Server
 	port := ":8080"

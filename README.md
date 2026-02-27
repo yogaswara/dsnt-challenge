@@ -48,6 +48,14 @@ project_root/
 }
 ```
 
+### 2. Echo
+- **POST** `/echo`
+- **Request Body**:
+```json
+{
+  "message": "hello world"
+}
+```
 - **Response**: 
 ```json
 {
