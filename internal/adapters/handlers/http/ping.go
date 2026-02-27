@@ -21,7 +21,6 @@ func (h *PingHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := h.service.Ping(r.Context())
 	logger.Info("ping request handled successfully")
-	response.Success(w, http.StatusOK, "Successfully get ping", map[string]string{"message": res})
+	response.Success(w, http.StatusOK, "", nil)
 }
