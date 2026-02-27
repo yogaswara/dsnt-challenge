@@ -147,5 +147,5 @@ func (h *BooksHandler) deleteBook(w http.ResponseWriter, r *http.Request, id str
 	}
 
 	logger.Info("delete book request handled successfully", "id", id)
-	response.JSON(w, http.StatusOK, map[string]string{"message": "Successfully deleted book"})
+	w.WriteHeader(http.StatusNoContent)
 }

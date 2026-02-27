@@ -84,6 +84,8 @@ project_root/
   }
   ```
 - **GET** `/books/:id`: Get a book by its `id`.
+- **PUT** `/books/:id`: Update an existing book's details. Body: `{"title": "New", "author": "New", "year": 2025}`.
+- **DELETE** `/books/:id`: Delete a book.
 
 ## How to Run
 

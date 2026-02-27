@@ -136,8 +136,8 @@ func TestBooksHandler(t *testing.T) {
 
 		handler.HandleBookByID(rr, req)
 
-		if rr.Code != http.StatusOK {
-			t.Errorf("expected status %v, got %v", http.StatusOK, rr.Code)
+		if rr.Code != http.StatusNoContent {
+			t.Errorf("expected status %v, got %v", http.StatusNoContent, rr.Code)
 		}
 	})
 }
