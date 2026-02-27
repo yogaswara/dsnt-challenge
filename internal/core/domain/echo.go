@@ -1,7 +1,9 @@
 package domain
 
+import "encoding/json"
+
 // EchoRequest represents the incoming request for echo
-type EchoRequest map[string]interface{}
+type EchoRequest = json.RawMessage
 
 // EchoResponse represents the output for echo
-type EchoResponse map[string]interface{}
+type EchoResponse = json.RawMessage

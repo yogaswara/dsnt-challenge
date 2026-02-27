@@ -38,5 +38,8 @@ func (h *EchoHandler) Handle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	logger.Info("echo request handled successfully")
-	response.JSON(w, http.StatusOK, res)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	bodyBytes, _ := json.Marshal(res)
+	w.Write(bodyBytes)
 }

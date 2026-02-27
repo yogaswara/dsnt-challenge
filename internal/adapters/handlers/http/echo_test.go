@@ -6,7 +6,6 @@ import (
 	"dsnt-challenge/internal/core/domain"
 	"dsnt-challenge/pkg/logger"
 	"encoding/json"
-	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -19,9 +18,6 @@ func init() {
 type mockEchoService struct{}
 
 func (m *mockEchoService) Echo(ctx context.Context, req domain.EchoRequest) (domain.EchoResponse, error) {
-	if len(req) == 0 {
-		return nil, errors.New("request body cannot be empty")
-	}
 	return domain.EchoResponse(req), nil
 }
 
@@ -67,8 +63,8 @@ func TestEchoHandler_Handle(t *testing.T) {
 		}
 	})
 
-	// Negative Case: Empty Message
-	t.Run("Empty Message Error", func(t *testing.T) {
+	// Positive Case: Empty Object
+	t.Run("Empty Object", func(t *testing.T) {
 		payload := []byte(`{}`)
 		req, err := http.NewRequest(http.MethodPost, "/echo", bytes.NewBuffer(payload))
 		if err != nil {
@@ -78,8 +74,12 @@ func TestEchoHandler_Handle(t *testing.T) {
 		rr := httptest.NewRecorder()
 		handler.Handle(rr, req)
 
-		if status := rr.Code; status != http.StatusBadRequest {
-			t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusBadRequest)
+		if status := rr.Code; status != http.StatusOK {
+			t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+		}
+
+		if rr.Body.String() != "{}" {
+			t.Errorf("handler returned wrong body: got %v want {}", rr.Body.String())
 		}
 	})
 }
