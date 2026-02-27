@@ -68,7 +68,7 @@ func (h *BooksHandler) getBooks(w http.ResponseWriter, r *http.Request) {
 		Limit:  limit,
 	}
 
-	books, meta, err := h.service.GetBooks(r.Context(), req)
+	books, _, err := h.service.GetBooks(r.Context(), req)
 	if err != nil {
 		logger.Error("failed to get books", err)
 		response.Error(w, http.StatusInternalServerError, "failed to get books")
@@ -76,7 +76,7 @@ func (h *BooksHandler) getBooks(w http.ResponseWriter, r *http.Request) {
 	}
 
 	logger.Info("get books request handled successfully")
-	response.SuccessWithMeta(w, http.StatusOK, "Successfully fetched books", books, meta)
+	response.JSON(w, http.StatusOK, books)
 }
 
 func (h *BooksHandler) getBookByID(w http.ResponseWriter, r *http.Request, id string) {
