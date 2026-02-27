@@ -83,7 +83,17 @@ func (s *booksService) UpdateBook(ctx context.Context, id string, req domain.Upd
 
 	existingBook, err := s.repo.FindByID(ctx, id)
 	if err != nil {
-		return domain.Book{}, err
+		// If book doesn't exist, we Upsert it (create with provided ID)
+		newBook := domain.Book{
+			ID:     id,
+			Title:  req.Title,
+			Author: req.Author,
+			Year:   req.Year,
+		}
+		if err := s.repo.Save(ctx, newBook); err != nil {
+			return domain.Book{}, err
+		}
+		return newBook, nil
 	}
 
 	existingBook.Title = req.Title
@@ -101,5 +111,10 @@ func (s *booksService) DeleteBook(ctx context.Context, id string) error {
 	if id == "" {
 		return errors.New("id is required")
 	}
-	return s.repo.Delete(ctx, id)
+	err := s.repo.Delete(ctx, id)
+	if err != nil && err.Error() == "book not found" {
+		// Idempotent delete: if already gone, we consider it success.
+		return nil
+	}
+	return err
 }

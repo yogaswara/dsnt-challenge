@@ -90,7 +90,7 @@ func (h *BooksHandler) getBookByID(w http.ResponseWriter, r *http.Request, id st
 	}
 
 	logger.Info("get book by id request handled successfully", "id", id)
-	response.Success(w, http.StatusOK, "Successfully fetched book", book)
+	response.JSON(w, http.StatusOK, book)
 }
 
 func (h *BooksHandler) createBook(w http.ResponseWriter, r *http.Request) {
@@ -109,7 +109,7 @@ func (h *BooksHandler) createBook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	logger.Info("create book request handled successfully", "id", book.ID)
-	response.Success(w, http.StatusCreated, "Successfully created book", book)
+	response.JSON(w, http.StatusCreated, book)
 }
 
 func (h *BooksHandler) updateBook(w http.ResponseWriter, r *http.Request, id string) {
@@ -132,7 +132,7 @@ func (h *BooksHandler) updateBook(w http.ResponseWriter, r *http.Request, id str
 	}
 
 	logger.Info("update book request handled successfully", "id", book.ID)
-	response.Success(w, http.StatusOK, "Successfully updated book", book)
+	response.JSON(w, http.StatusOK, book)
 }
 
 func (h *BooksHandler) deleteBook(w http.ResponseWriter, r *http.Request, id string) {
