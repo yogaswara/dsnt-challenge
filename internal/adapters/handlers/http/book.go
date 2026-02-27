@@ -65,7 +65,7 @@ func (h *BooksHandler) getBooks(w http.ResponseWriter, r *http.Request) {
 		Limit:  limit,
 	}
 
-	books, meta, err := h.service.GetBooks(r.Context(), req)
+	books, _, err := h.service.GetBooks(r.Context(), req)
 	if err != nil {
 		logger.Error("failed to get books", err)
 		response.Error(w, http.StatusInternalServerError, "failed to get books")
@@ -73,7 +73,7 @@ func (h *BooksHandler) getBooks(w http.ResponseWriter, r *http.Request) {
 	}
 
 	logger.Info("get books request handled successfully")
-	response.SuccessWithMeta(w, http.StatusOK, "Successfully fetched books", books, meta)
+	response.JSON(w, http.StatusOK, books)
 }
 
 func (h *BooksHandler) getBookByID(w http.ResponseWriter, r *http.Request, id string) {
@@ -89,7 +89,7 @@ func (h *BooksHandler) getBookByID(w http.ResponseWriter, r *http.Request, id st
 	}
 
 	logger.Info("get book by id request handled successfully", "id", id)
-	response.Success(w, http.StatusOK, "Successfully fetched book", book)
+	response.JSON(w, http.StatusOK, book)
 }
 
 func (h *BooksHandler) createBook(w http.ResponseWriter, r *http.Request) {
@@ -108,7 +108,7 @@ func (h *BooksHandler) createBook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	logger.Info("create book request handled successfully", "id", book.ID)
-	response.Success(w, http.StatusCreated, "Successfully created book", book)
+	response.JSON(w, http.StatusCreated, book)
 }
 
 func (h *BooksHandler) updateBook(w http.ResponseWriter, r *http.Request, id string) {
@@ -131,7 +131,7 @@ func (h *BooksHandler) updateBook(w http.ResponseWriter, r *http.Request, id str
 	}
 
 	logger.Info("update book request handled successfully", "id", book.ID)
-	response.Success(w, http.StatusOK, "Successfully updated book", book)
+	response.JSON(w, http.StatusOK, book)
 }
 
 func (h *BooksHandler) deleteBook(w http.ResponseWriter, r *http.Request, id string) {
@@ -147,5 +147,5 @@ func (h *BooksHandler) deleteBook(w http.ResponseWriter, r *http.Request, id str
 	}
 
 	logger.Info("delete book request handled successfully", "id", id)
-	response.Success(w, http.StatusOK, "Successfully deleted book", nil)
+	response.JSON(w, http.StatusOK, map[string]string{"message": "Successfully deleted book"})
 }
