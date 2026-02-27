@@ -10,6 +10,7 @@ type Response struct {
 	Success bool        `json:"success"`
 	Message string      `json:"message,omitempty"`
 	Data    interface{} `json:"data,omitempty"`
+	Meta    interface{} `json:"meta,omitempty"`
 	Error   string      `json:"error,omitempty"`
 }
 
@@ -28,6 +29,16 @@ func Success(w http.ResponseWriter, statusCode int, message string, data interfa
 		Success: true,
 		Message: message,
 		Data:    data,
+	})
+}
+
+// SuccessWithMeta sends a success response with additional metadata
+func SuccessWithMeta(w http.ResponseWriter, statusCode int, message string, data interface{}, meta interface{}) {
+	JSON(w, statusCode, Response{
+		Success: true,
+		Message: message,
+		Data:    data,
+		Meta:    meta,
 	})
 }
 

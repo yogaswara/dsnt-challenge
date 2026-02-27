@@ -66,6 +66,25 @@ project_root/
 }
 ```
 
+### 3. Books CRUD
+- **POST** `/books`: Create a new book. Body: `{"title": "Book Title", "author": "Author Name", "year": 2024}`.
+- **GET** `/books`: List all books with pagination and search. Query parameters: `?page=1&limit=10&search=keyword`.
+  Response includes pagination metadata:
+  ```json
+  {
+    "success": true,
+    "message": "Successfully fetched books",
+    "data": [...],
+    "meta": {
+      "page": 1,
+      "limit": 10,
+      "total_items": 1,
+      "total_pages": 1
+    }
+  }
+  ```
+- **GET** `/books/:id`: Get a book by its `id`.
+
 ## How to Run
 
 1. **Clone & Navigate**
