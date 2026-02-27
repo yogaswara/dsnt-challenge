@@ -83,17 +83,7 @@ func (s *booksService) UpdateBook(ctx context.Context, id string, req domain.Upd
 
 	existingBook, err := s.repo.FindByID(ctx, id)
 	if err != nil {
-		// If book doesn't exist, we Upsert it (create with provided ID)
-		newBook := domain.Book{
-			ID:     id,
-			Title:  req.Title,
-			Author: req.Author,
-			Year:   req.Year,
-		}
-		if err := s.repo.Save(ctx, newBook); err != nil {
-			return domain.Book{}, err
-		}
-		return newBook, nil
+		return domain.Book{}, err
 	}
 
 	existingBook.Title = req.Title
