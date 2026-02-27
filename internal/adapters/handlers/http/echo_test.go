@@ -19,10 +19,10 @@ func init() {
 type mockEchoService struct{}
 
 func (m *mockEchoService) Echo(ctx context.Context, req domain.EchoRequest) (domain.EchoResponse, error) {
-	if req.Message == "" {
-		return domain.EchoResponse{}, errors.New("message cannot be empty")
+	if len(req) == 0 {
+		return nil, errors.New("request body cannot be empty")
 	}
-	return domain.EchoResponse{Message: req.Message}, nil
+	return domain.EchoResponse(req), nil
 }
 
 func TestEchoHandler_Handle(t *testing.T) {
@@ -31,7 +31,7 @@ func TestEchoHandler_Handle(t *testing.T) {
 
 	// Positive Case
 	t.Run("Success POST", func(t *testing.T) {
-		payload := []byte(`{"message": "hello test"}`)
+		payload := []byte(`{"message": "hello test", "age": 25}`)
 		req, err := http.NewRequest(http.MethodPost, "/echo", bytes.NewBuffer(payload))
 		if err != nil {
 			t.Fatal(err)
@@ -47,8 +47,8 @@ func TestEchoHandler_Handle(t *testing.T) {
 		var response map[string]interface{}
 		json.Unmarshal(rr.Body.Bytes(), &response)
 
-		if response["success"] != true {
-			t.Errorf("expected success to be true")
+		if response["message"] != "hello test" || response["age"] != float64(25) {
+			t.Errorf("expected echoed json properly, got: %v", response)
 		}
 	})
 
@@ -69,7 +69,7 @@ func TestEchoHandler_Handle(t *testing.T) {
 
 	// Negative Case: Empty Message
 	t.Run("Empty Message Error", func(t *testing.T) {
-		payload := []byte(`{"message": ""}`)
+		payload := []byte(`{}`)
 		req, err := http.NewRequest(http.MethodPost, "/echo", bytes.NewBuffer(payload))
 		if err != nil {
 			t.Fatal(err)

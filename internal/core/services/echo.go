@@ -15,11 +15,9 @@ func NewEchoService() ports.EchoService {
 }
 
 func (s *echoService) Echo(ctx context.Context, req domain.EchoRequest) (domain.EchoResponse, error) {
-	if req.Message == "" {
-		return domain.EchoResponse{}, errors.New("message cannot be empty")
+	if len(req) == 0 {
+		return nil, errors.New("request body cannot be empty")
 	}
 
-	return domain.EchoResponse{
-		Message: req.Message,
-	}, nil
+	return domain.EchoResponse(req), nil
 }

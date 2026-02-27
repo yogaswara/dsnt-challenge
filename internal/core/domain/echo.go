@@ -1,11 +1,7 @@
 package domain
 
 // EchoRequest represents the incoming request for echo
-type EchoRequest struct {
-	Message string `json:"message"`
-}
+type EchoRequest map[string]interface{}
 
 // EchoResponse represents the output for echo
-type EchoResponse struct {
-	Message string `json:"message"`
-}
+type EchoResponse map[string]interface{}

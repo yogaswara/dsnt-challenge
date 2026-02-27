@@ -32,11 +32,11 @@ func (h *EchoHandler) Handle(w http.ResponseWriter, r *http.Request) {
 
 	res, err := h.service.Echo(r.Context(), req)
 	if err != nil {
-		logger.Error("echo service failed", err, "message", req.Message)
+		logger.Error("echo service failed", err, "payload", req)
 		response.Error(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	logger.Info("echo request handled successfully", "message", res.Message)
-	response.Success(w, http.StatusOK, "Successfully response echo", res)
+	logger.Info("echo request handled successfully")
+	response.JSON(w, http.StatusOK, res)
 }

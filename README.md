@@ -40,11 +40,7 @@ project_root/
 - **Response**: 
 ```json
 {
-  "success": true,
-  "message": "success",
-  "data": {
-    "message": "pong"
-  }
+  "success": true
 }
 ```
 
@@ -59,11 +55,7 @@ project_root/
 - **Response**: 
 ```json
 {
-  "success": true,
-  "message": "success",
-  "data": {
-    "message": "hello world"
-  }
+  "message": "hello world"
 }
 ```
 - **Error Response**:
