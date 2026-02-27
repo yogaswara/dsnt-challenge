@@ -21,18 +21,21 @@ func main() {
 	pingService := services.NewPingService()
 	echoService := services.NewEchoService()
 	booksService := services.NewBooksService(bookRepo)
+	authService := services.NewAuthService()
 
 	// Initialize Handlers
 	pingHandler := httphandler.NewPingHandler(pingService)
 	echoHandler := httphandler.NewEchoHandler(echoService)
 	booksHandler := httphandler.NewBooksHandler(booksService)
+	authHandler := httphandler.NewAuthHandler(authService)
 
 	// Setup Routes
 	mux := http.NewServeMux()
 	mux.HandleFunc("/ping", pingHandler.Handle)
 	mux.HandleFunc("/echo", echoHandler.Handle)
-	mux.HandleFunc("/books", booksHandler.HandleBooks)
-	mux.HandleFunc("/books/", booksHandler.HandleBookByID)
+	mux.HandleFunc("/auth/token", authHandler.HandleToken)
+	mux.HandleFunc("/books", httphandler.AuthMiddleware(authService, booksHandler.HandleBooks))
+	mux.HandleFunc("/books/", httphandler.AuthMiddleware(authService, booksHandler.HandleBookByID))
 
 	// Start Server
 	port := ":8080"
